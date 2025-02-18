@@ -1,0 +1,71 @@
+.gallery-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  gap: 24px;
+  width: 1128px;
+}
+
+.gallery-item {
+  width: 360px;
+  height: 200px;
+  border: 1px solid #808080;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-image {
+  width: 360px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-texts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 48px;
+  width: 359px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff;
+  padding-left: 20px;
+  padding-right: 25px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #808080;
+}
+
+.likes {
+  margin-right: 28px;
+}
+
+.views {
+  margin-right: 27px;
+}
+
+.comments {
+  margin-right: 32px;
+}
+
+.element-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+.element-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+  text-align: center;
+}
