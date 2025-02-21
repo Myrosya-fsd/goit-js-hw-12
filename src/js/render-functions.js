@@ -23,6 +23,12 @@ export function renderAllCards(element, images) {
   litebox.refresh();
 }
 
+export function renderAppendCards(element, images) {
+  const markup = createAllCardsMarkup(images);
+  element.insertAdjacentHTML('beforeend', markup);
+  litebox.refresh();
+}
+
 export function createAllCardsMarkup(images) {
   return images.map(createCardMarkup).join('');
 }
