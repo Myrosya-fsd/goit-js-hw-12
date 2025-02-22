@@ -15,9 +15,12 @@ const refs = {
 refs.form.addEventListener('submit', handleFormSubmitAsync);
 refs.more.addEventListener('click', handleLoadMoreClick);
 refs.loader.style.display = 'none';
+refs.loader.style.display = 'none';
 
 let searchQuery = '';
 let page = 1;
+let totalHits = 0;
+const perPage = 15;
 
 async function handleFormSubmitAsync(event) {
   event.preventDefault();
@@ -30,21 +33,19 @@ async function handleFormSubmitAsync(event) {
   page = 1;
   renderAllCards(refs.gallery, []);
   refs.loader.style.display = 'block';
+  refs.more.style.display = 'none';
+
   try {
-    const data = await searchImages(value);
+    const data = await searchImages(searchQuery, page);
+    totalHits = data.totalHits;
+
     if (data.hits.length === 0) {
       showErrorMessage(
         'Sorry, there are no images matching your search query. Please try again!'
       );
     } else {
       renderAllCards(refs.gallery, data.hits);
-      if (data.hits.length < 15) {
-        showErrorMessage(
-          "We're sorry, but you've reached the end of search results."
-        );
-      } else {
-        refs.more.style.display = 'block';
-      }
+      toggleLoadMoreButton();
     }
   } catch (error) {
     showErrorMessage('Sorry, something went wrong. Please try again!');
@@ -59,18 +60,17 @@ async function handleLoadMoreClick() {
   refs.more.style.display = 'none';
   try {
     const data = await searchImages(searchQuery, page);
+    renderAppendCards(refs.gallery, data.hits);
     if (data.hits.length < 15 || page * 15 > data.totalHits) {
       showErrorMessage(
         "We're sorry, but you've reached the end of search results."
       );
-    } else {
-      refs.more.style.display = 'block';
+      window.scrollBy({
+        top: getCardHeight(),
+        behavior: 'smooth',
+      });
     }
-    renderAppendCards(refs.gallery, data.hits);
-    window.scrollBy({
-      top: getCardHeight(),
-      behavior: 'smooth',
-    });
+    toggleLoadMoreButton();
   } catch (error) {
     showErrorMessage('Sorry, something went wrong. Please try again!');
   } finally {
@@ -78,8 +78,15 @@ async function handleLoadMoreClick() {
   }
 }
 
+function toggleLoadMoreButton() {
+  if (page * perPage >= totalHits) {
+    refs.more.style.display = 'none';
+  } else {
+    refs.more.style.display = 'block';
+  }
+}
+
 function getCardHeight() {
   const card = document.querySelector('.gallery-item:nth-child(1)');
-  const rect = card.getBoundingClientRect();
-  return rect.height * 2;
+  return card ? card.getBoundingClientRect().height * 2 : 0;
 }
